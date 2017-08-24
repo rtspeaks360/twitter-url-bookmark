@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- Made by Rishabh Thukral-->
-    <title>TMS - Drivers</title>
+    <title>Twitub</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
@@ -38,7 +38,7 @@
     <!-- Container (Contact Section) -->
     <div id="contact" class="container">
       <h3 class="text-center">Tweets Data</h3>
-      <p class="text-center"><em>The data required is as follows!</em></p>
+      <p class="text-center"><em>We provide your latest tweets</em></p>
 
       {% for message in get_flashed_messages() %}
           <p class = "text-center">{{ message }}</p><br>
@@ -63,9 +63,9 @@
               {% for d in tweets %}
                 
                   <tr>
-                    <td>{{d.tweet_id}}</td>
-                    <td>{{d.contcat}}</td>
-                    <td>{{d.embedded_url}}</td>
+                    <td>{{d.twitter_id}}</td>
+                    <td>{{d.contact}}</td>
+                    <td><a href="{{d.embedded_url}}">{{d.embedded_url}}</a>></td>
                     <td>{{d.tweet_text}}</td>
                     <td>{{d.twitter_timestamp}}</td>
                     </td>  
