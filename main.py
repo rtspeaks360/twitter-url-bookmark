@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 23:30:18
+# @Last Modified time: 2017-08-24 23:33:59
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -136,7 +136,7 @@ def get_tweets(username):
 		user = None
 		flash('No user found' + username)
 		return redirect(url_for('index'))
-	tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.user_id).all()
+	tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).all()
 	
 	return render_template("tweets-new.html", tweets = tweets)
 
