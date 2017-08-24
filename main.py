@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 21:08:25
+# @Last Modified time: 2017-08-24 21:11:23
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -11,6 +11,7 @@ from urllib.parse import parse_qsl
 import oauth2 as oauth
 from functools import wraps
 import json
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -163,6 +164,6 @@ def index():
  
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000)
-    app.run(port = port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host = '0.0.0.0', port = port)
 
