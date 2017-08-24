@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 18:04:13
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 07:21:46
+# @Last Modified time: 2017-08-24 20:14:58
 
 #importing dependencies
 import os
@@ -23,11 +23,12 @@ class User(Base):
 
 	__tablename__ = "users"
 	id = Column(Integer, primary_key = True)
-	twitter_user_id = Column(String(20))
-	twitter_username = Column(String(20))
-	access_token = Column(String(40), nullable = False)
-	access_token_secret = Column(String(40), nullable = False)
-	last_updated_tweet_id = Column(String(20))
+	twitter_user_id = Column(String(40))
+	twitter_username = Column(String(40))
+	access_token = Column(String(140), nullable = False)
+	access_token_secret = Column(String(140), nullable = False)
+	last_updated_tweet_id = Column(String(40))
+	new_user = Column(Boolean, default = True)
 
 	insert_time = Column(DateTime(timezone = True), nullable = False, default = func.now())
 	update_time = Column(DateTime(timezone = True), nullable = False, default = func.now())
@@ -52,6 +53,7 @@ class Tweet(Base):
 
 	__tablename__ = "tweets"
 	id = Column(Integer, primary_key = True)
+	twitter_id = Column(String(40))
 	contact = Column(String(20), nullable = False)
 	twitter_contact_id = Column(String(20))
 	tweet_text = Column(String(140), nullable = False)
@@ -62,7 +64,7 @@ class Tweet(Base):
 	update_time = Column(DateTime(timezone = True), nullable = False, default = func.now())
 
 	user_id = Column(Integer, ForeignKey("users.id"))
-	user = relationship("Author", back_populates = "tweets")
+	user = relationship("User", back_populates = "tweets")
 
 	@property
 	def serialize(self):
@@ -78,4 +80,6 @@ class Tweet(Base):
 		}
 
 
-engine = create_engine("postgresql+psycopg2://rishabh:rishabh123@tapzo-url-bookmarker.cuxzbqqougwh.us-west-2.rds.amazonaws.com:5432/tapzo-url-bookmarker")
+engine = create_engine("postgres+psycopg2://aws_postgres:root1234@postgres-instance.cuxzbqqougwh.us-west-2.rds.amazonaws.com:5432/twitub")
+
+Base.metadata.create_all(engine)

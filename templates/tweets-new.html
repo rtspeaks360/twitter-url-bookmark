@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Made by Rishabh Thukral-->
+    <title>TMS - Drivers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+    <link href="{{url_for('static', filename = 'css/lato.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static', filename = 'css/montserrat-regular.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'css/style.css')}}">
+    
+    <script src="{{url_for('static', filename = 'js/bootstrap/bootstrap.min.js')}}"></script>
+
+  </head>
+  <body id="myPage"  data-target=".navbar" data-offset="50">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{url_for('homePage')}}">Twitub</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{url_for('logout')}}">Log out?</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+    <!-- Container (Contact Section) -->
+    <div id="contact" class="container">
+      <h3 class="text-center">Tweets Data</h3>
+      <p class="text-center"><em>Employed drivers are as follows!</em></p>
+
+      {% for message in get_flashed_messages() %}
+          <p class = "text-center">{{ message }}</p><br>
+      {% endfor %}
+
+      <div class="row">
+        
+        <div class="table-responsive">
+          <table class = "table">
+            <caption>Tweets!</caption>
+            <thead>
+              <tr>
+              	<th>TwitterId</th>
+                <th>Contact</th>
+                <th>Extracted url</th>
+                <th>Tweet</th>
+                <th>Twitter Timestamp</th> 
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for d in tweets %}
+                
+                  <tr>
+                    <td>{{d.tweet_id}}</td>
+                    <td>{{d.contcat}}</td>
+                    <td>{{d.embedded_url}}</td>
+                    <td>{{d.tweet_text}}</td>
+                    <td>{{d.twitter_timestamp}}</td>
+                    </td>  
+                  </tr>
+                
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <br>
+        <div class="row">
+          <div class="col-md-12 form-group">
+            <a href="{{url_for('addDrivers')}}">
+              <button class="btn pull-right" type="submit">Add Driver</button>
+            </a>
+          </div>
+        </div>
+        
+      </div>
+      <br>
+     
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+      </a><br><br>
+      <p>&copy; 2017 RTC. Proudly created by Rishabh Thukral.</p>
+    </footer>
+
+    <script>
+    $(document).ready(function(){
+      // Initialize Tooltip
+      $('[data-toggle="tooltip"]').tooltip();
+      
+      // Add smooth scrolling to all links in navbar + footer link
+      $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
+
+          // Prevent default anchor click behavior
+          event.preventDefault();
+
+          // Store hash
+          var hash = this.hash;
+
+          // Using jQuery's animate() method to add smooth page scroll
+          // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 900, function(){
+       
+            // Add hash (#) to URL when done scrolling (default click behavior)
+            window.location.hash = hash;
+          });
+        } // End if
+      });
+    })
+    </script>
+
+  </body>
+</html>

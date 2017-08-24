@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    	<p>Tweets page</p>
+    	<p>Click <a href="{{url_for('logout')}}">here</a> to logout.</p>
+    	{% for message in get_flashed_messages() %}
+          <p>{{ message }}</p><br>
+        {% endfor %}
+
+    </body>
+</html>
