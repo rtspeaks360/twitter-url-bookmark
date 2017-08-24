@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 00:41:22
+# @Last Modified time: 2017-08-25 03:27:52
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -12,13 +12,16 @@ import oauth2 as oauth
 from functools import wraps
 import json
 import os
+import tweepy
+import re
+import datetime
 
 app = Flask(__name__)
 api = Api(app)
 
 app.secret_key = "pOTCgqJXxNZnZh7F5U2IoGxuaMvThulG"
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 
 from models import Base, User, Tweet
@@ -108,6 +111,52 @@ requestArguments1.add_argument("oauth_token", type = str, location = "args")
 requestArguments1.add_argument("oauth_verifier", type = str, location = "args")
 
 
+def get_tweets_from_twitter(user):
+	access_token = user.access_token
+	access_token_secret = user.access_token_secret
+	if user.last_updated_tweet_id != None:
+		tweet_id = int(_.last_updated_tweet_id)
+	else :
+		tweet_id = 0
+	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+	auth.set_access_token(access_token,access_token_secret)
+
+	api = tweepy.API(auth)
+	tweets = []
+	public_tweets = api.home_timeline()
+	x = len(public_tweets)
+	try:
+		for i in range(x):
+			tweet = public_tweets[x - i -1]
+			if tweet_id<tweet.id:
+				url=tweet.text
+				urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url)
+				if(len(urls)>0):
+					twt = Tweet()
+					twt.twitter_id = tweet.id
+					twt.tweet_text = tweet.text
+					twt.embedded_url = urls[0]
+					twt.twitter_contact_id = tweet.author._json['id']
+					twt.contact = tweet.author._json['screen_name']
+					twt.twitter_timestamp=tweet.created_at
+					twt.user = _
+					dbsession.add(twt)
+					tweets.append(twt)
+					_.last_updated_tweet_id = public_tweets[0].id
+					dbsession.add(_)
+						
+		try:
+			dbsession.commit()
+			print("added tweet")
+		except e:
+			print (e)
+
+	except Exception as e:
+		print(e)
+
+	return tweets
+
+
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
@@ -128,19 +177,26 @@ def login_required(f):
 @app.route('/tweets/<username>', methods = ['GET', 'POST'])
 @login_required
 def get_tweets(username):
-	flash ("you are logged in as " + username)
 	try:
 		user = dbsession.query(User).filter(User.twitter_username == username).one()
-		
+			
 	except Exception as e:
 		user = None
 		flash('No user found' + username)
 		return redirect(url_for('index'))
-	tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).order_by(Tweet.twitter_timestamp).all()
-	if len(tweets) == 0:
-		flash("No tweets were found right now in our database. Updation of tweets may take some time.")
-	
-	return render_template("tweets-new.html", tweets = tweets)
+	if request.method == "GET":
+		flash ("you are logged in as " + username)
+		
+		tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(Tweet.twitter_timestamp.date() == datetime.datetime.now().date()).order_by(desc(Tweet.twitter_timestamp)).all()
+		if len(tweets) == 0:
+			tweets = get_tweets_from_twitter(user)
+			# flash("No tweets were found right now in our database. Updation of tweets may take some time.")
+		
+		return render_template("tweets-new.html", tweets = tweets)
+
+	if request.method == "POST":
+		date = request.form["tweets_for_date"]
+		print(type(request.form["tweets_for_date"]))
 
 @app.route('/logout', methods = ['GET'])
 @login_required

@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-24 21:58:50
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 23:04:27
+# @Last Modified time: 2017-08-25 02:28:06
 
 
 import tweepy
@@ -48,10 +48,10 @@ while True:
 					urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url)
 					if(len(urls)>0):
 						twt = Tweet()
-						twt.tweet_id = tweet.id
-						twt.tweet_text=tweet.text
-						twt.embedded_url=urls[0]
-						twt.twitter_contact_id=tweet.author._json['id']
+						twt.twitter_id = tweet.id
+						twt.tweet_text = tweet.text
+						twt.embedded_url = urls[0]
+						twt.twitter_contact_id = tweet.author._json['id']
 						twt.contact = tweet.author._json['screen_name']
 						twt.twitter_timestamp=tweet.created_at
 						twt.user = _

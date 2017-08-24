@@ -27,7 +27,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{url_for('logout')}}">Log out?</a></li>
+            <li><a href="{{url_for('logout')}}">logout?</a></li>
           </ul>
         </div>
       </div>
@@ -37,18 +37,25 @@
 
     <!-- Container (Contact Section) -->
     <div id="contact" class="container">
-      <h3 class="text-center">Tweets Data</h3>
-      <p class="text-center"><em>We provide your latest tweets</em></p>
+      <h3 class="text-center">TWEETS DATA</h3>
+      
 
       {% for message in get_flashed_messages() %}
           <p class = "text-center">{{ message }}</p><br>
       {% endfor %}
 
+      <dir class="row">
+      	<form><p class = "text-center">Get tweets for : 
+      		<input type="date" name="tweets_for_date">
+      		<input type="submit" value="GO">
+      		</p>
+      	</form>
+      </dir>
       <div class="row">
         
         <div class="table-responsive">
           <table class = "table">
-            <caption>Tweets!</caption>
+            <caption><p class="text-center"><em>We provide your latest tweets</em></p></caption>
             <thead>
               <tr>
                 <th>Contact</th>
