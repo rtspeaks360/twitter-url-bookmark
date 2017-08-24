@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 21:11:23
+# @Last Modified time: 2017-08-24 23:30:18
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -129,7 +129,16 @@ def login_required(f):
 @login_required
 def get_tweets(username):
 	flash ("you are logged in as " + username)
-	return render_template("tweets.html")
+	try:
+		user = dbsession.query(User).filter(User.twitter_username == username).one()
+		
+	except Exception as e:
+		user = None
+		flash('No user found' + username)
+		return redirect(url_for('index'))
+	tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.user_id).all()
+	
+	return render_template("tweets-new.html", tweets = tweets)
 
 @app.route('/logout', methods = ['GET'])
 @login_required

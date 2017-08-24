@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 18:04:13
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 20:14:58
+# @Last Modified time: 2017-08-24 23:13:05
 
 #importing dependencies
 import os
@@ -56,7 +56,7 @@ class Tweet(Base):
 	twitter_id = Column(String(40))
 	contact = Column(String(20), nullable = False)
 	twitter_contact_id = Column(String(20))
-	tweet_text = Column(String(140), nullable = False)
+	tweet_text = Column(String(200), nullable = False)
 	embedded_url = Column(String(100), nullable = False)
 	twitter_timestamp = Column(DateTime(timezone = True), nullable = False)
 
@@ -76,7 +76,6 @@ class Tweet(Base):
 			'twitter_timestamp' : self.twitter_timestamp,
 			'insert_time' : self.insert_time,
 			'update_time' : self.update_time
-
 		}
 
 

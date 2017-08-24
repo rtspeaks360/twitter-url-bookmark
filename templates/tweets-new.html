@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('homePage')}}">Twitub</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">Twitub</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
@@ -38,7 +38,7 @@
     <!-- Container (Contact Section) -->
     <div id="contact" class="container">
       <h3 class="text-center">Tweets Data</h3>
-      <p class="text-center"><em>Employed drivers are as follows!</em></p>
+      <p class="text-center"><em>The data required is as follows!</em></p>
 
       {% for message in get_flashed_messages() %}
           <p class = "text-center">{{ message }}</p><br>
@@ -77,13 +77,13 @@
         </div>
         
         <br>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12 form-group">
             <a href="{{url_for('addDrivers')}}">
               <button class="btn pull-right" type="submit">Add Driver</button>
             </a>
           </div>
-        </div>
+        </div> -->
         
       </div>
       <br>
