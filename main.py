@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-23 02:59:22
+# @Last Modified time: 2017-08-24 08:15:52
 
 import logging
 from flask import Flask
@@ -23,6 +23,6 @@ def server_error(e):
 app.register_blueprint(main, url_prefix='/') 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
+    
+    app.run()
 
