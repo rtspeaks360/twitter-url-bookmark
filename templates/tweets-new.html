@@ -51,7 +51,6 @@
             <caption>Tweets!</caption>
             <thead>
               <tr>
-              	<th>TwitterId</th>
                 <th>Contact</th>
                 <th>Extracted url</th>
                 <th>Tweet</th>
@@ -63,7 +62,6 @@
               {% for d in tweets %}
                 
                   <tr>
-                    <td>{{d.twitter_id}}</td>
                     <td>{{d.contact}}</td>
                     <td><a href="{{d.embedded_url}}">{{d.embedded_url}}</a>></td>
                     <td>{{d.tweet_text}}</td>
