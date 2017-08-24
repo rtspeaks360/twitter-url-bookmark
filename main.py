@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-24 20:39:29
+# @Last Modified time: 2017-08-24 21:08:25
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -163,6 +163,6 @@ def index():
  
 
 if __name__ == "__main__":
-    
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000)
+    app.run(port = port)
 
