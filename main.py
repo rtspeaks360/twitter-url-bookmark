@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 12:04:32
+# @Last Modified time: 2017-08-25 13:38:54
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -21,7 +21,7 @@ api = Api(app)
 
 app.secret_key = "pOTCgqJXxNZnZh7F5U2IoGxuaMvThulG"
 
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, and_
 from sqlalchemy.orm import sessionmaker
 
 from models import Base, User, Tweet
@@ -184,12 +184,16 @@ def get_tweets():
 			
 	except Exception as e:
 		user = None
-		flash('No user found' + username + ". Showing tweets for " + str(datetime.datetime.now.date()))
+		flash('No user found' + username)
 		return redirect(url_for('index'))
 	if request.method == "GET":
-		flash ("you are logged in as " + username)
-		
-		tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).order_by(desc(Tweet.twitter_timestamp)).all()
+		flash ("you are logged in as " + username+ ". Showing tweets for today - " + str(datetime.datetime.now.date()) + ".")
+		today = datetime.datetime.now().date()
+		s = datetime.datetime.strftime(today, '%Y-%m-%d 00:00:00')
+		interval_start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
+		interval_end = interval_start + datetime.timedelta(days = 1)
+
+		tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
 		if len(tweets) == 0:
 			tweets = get_tweets_from_twitter(user)
 			# flash("No tweets were found right now in our database. Updation of tweets may take some time.")
@@ -197,9 +201,23 @@ def get_tweets():
 		return render_template("tweets-new.html", tweets = tweets)
 
 	if request.method == "POST":
-		date = request.form["tweets_for_date"]
-		print(type(request.form["tweets_for_date"]))
-		return redirect(url_for('get_tweets'))
+		date_q = request.form["tweets_for_date"]
+		username = session["username"]
+		try:
+			user = dbsession.query(User).filter(User.twitter_username == username).one()
+				
+		except Exception as e:
+			user = None
+			flash('No user found' + username)
+			return redirect(url_for('index'))
+		interval_start = datetime.datetime.strptime((date_q + " 00:00:00"), '%Y-%m-%d %H:%M:%S')
+		interval_end = interval_start + datetime.timedelta(days = 1)
+		tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
+		if len(tweets) == 0:
+			flash("Sorry. No tweets were found for " + date_q + " in our database.")
+		else:
+			flash("Showing tweets for " + date_q + ".")
+		return render_template("tweets-new.html", tweets = tweets)
 
 @app.route('/logout', methods = ['GET'])
 @login_required
