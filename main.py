@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 14:12:33
+# @Last Modified time: 2017-08-25 14:45:40
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -112,10 +112,12 @@ requestArguments1.add_argument("oauth_token", type = str, location = "args")
 requestArguments1.add_argument("oauth_verifier", type = str, location = "args")
 
 
-def get_tweets_from_twitter(user):
-	access_token = user.access_token
-	access_token_secret = user.access_token_secret
-	if user.last_updated_tweet_id != None:
+def get_tweets_for_user(user)
+	_ = user
+	print(_.id)
+	access_token = _.access_token
+	access_token_secret = _.access_token_secret
+	if _.last_updated_tweet_id != None:
 		tweet_id = int(_.last_updated_tweet_id)
 	else :
 		tweet_id = 0
@@ -123,7 +125,7 @@ def get_tweets_from_twitter(user):
 	auth.set_access_token(access_token,access_token_secret)
 
 	api = tweepy.API(auth)
-	tweets = []
+
 	public_tweets = api.home_timeline()
 	x = len(public_tweets)
 	try:
@@ -142,20 +144,16 @@ def get_tweets_from_twitter(user):
 					twt.twitter_timestamp=tweet.created_at
 					twt.user = _
 					dbsession.add(twt)
-					tweets.append(twt)
 					_.last_updated_tweet_id = public_tweets[0].id
 					dbsession.add(_)
 						
 		try:
 			dbsession.commit()
-			print("added tweet")
+			print("added tweets and updated user")
 		except e:
 			print (e)
-
 	except Exception as e:
 		print(e)
-
-	return tweets
 
 
 def login_required(f):
