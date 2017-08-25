@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 14:52:39
+# @Last Modified time: 2017-08-25 14:57:52
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -125,7 +125,7 @@ def get_tweets_for_user(user):
 	auth.set_access_token(access_token,access_token_secret)
 
 	api = tweepy.API(auth)
-
+	tweets_return = []
 	public_tweets = api.home_timeline()
 	x = len(public_tweets)
 	try:
@@ -144,6 +144,7 @@ def get_tweets_for_user(user):
 					twt.twitter_timestamp=tweet.created_at
 					twt.user = _
 					dbsession.add(twt)
+					tweets_return.append(twt)
 					_.last_updated_tweet_id = public_tweets[0].id
 					dbsession.add(_)
 						
@@ -154,6 +155,8 @@ def get_tweets_for_user(user):
 			print (e)
 	except Exception as e:
 		print(e)
+
+	return tweets_return
 
 
 def login_required(f):
