@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 09:01:27
+# @Last Modified time: 2017-08-25 12:04:32
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -99,8 +99,9 @@ class callbackResource(Resource):
 			dbsession.commit()
 
 			session["logged_in"] = True
+			session["username"] = _.twitter_username
 			
-			return redirect(url_for("get_tweets", username = _.twitter_username))
+			return redirect(url_for("get_tweets"))
 		else :
 			return "Twitter could not respond respond"
 
@@ -160,7 +161,7 @@ def get_tweets_from_twitter(user):
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
+		if 'logged_in' in session and 'username' in session:
 			return f(*args, **kwargs)
 		else:
 			flash('You need to login first')
@@ -174,15 +175,16 @@ def login_required(f):
 
 #declaring route for '/' endpoint
 
-@app.route('/tweets/<username>', methods = ['GET', 'POST'])
+@app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
-def get_tweets(username):
+def get_tweets():
+	username = session["username"]
 	try:
 		user = dbsession.query(User).filter(User.twitter_username == username).one()
 			
 	except Exception as e:
 		user = None
-		flash('No user found' + username)
+		flash('No user found' + username + ". Showing tweets for " + str(datetime.datetime.now.date()))
 		return redirect(url_for('index'))
 	if request.method == "GET":
 		flash ("you are logged in as " + username)
@@ -197,7 +199,7 @@ def get_tweets(username):
 	if request.method == "POST":
 		date = request.form["tweets_for_date"]
 		print(type(request.form["tweets_for_date"]))
-		return redirect(url_for('get_tweets', username = username))
+		return redirect(url_for('get_tweets'))
 
 @app.route('/logout', methods = ['GET'])
 @login_required

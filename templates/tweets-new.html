@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('index')}}">Twitub</a>
+          <a class="navbar-brand" href="{{url_for('get_tweets')}}">Twitub</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
@@ -58,6 +58,7 @@
             <caption><p><em>We provide your latest tweets</em></p></caption>
             <thead>
               <tr>
+              	<th>Twitter Id</th>
                 <th>Contact</th>
                 <th>Extracted url</th>
                 <th>Tweet</th>
@@ -69,6 +70,7 @@
               {% for d in tweets %}
                 
                   <tr>
+                  	<td>{{d.twitter_id}}</td>
                     <td>{{d.contact}}</td>
                     <td><a href="{{d.embedded_url}}">{{d.embedded_url}}</a>></td>
                     <td>{{d.tweet_text}}</td>
