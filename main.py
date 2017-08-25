@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 04:10:10
+# @Last Modified time: 2017-08-25 09:01:27
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -197,7 +197,7 @@ def get_tweets(username):
 	if request.method == "POST":
 		date = request.form["tweets_for_date"]
 		print(type(request.form["tweets_for_date"]))
-		return redirect(url_for('get_tweets'))
+		return redirect(url_for('get_tweets', username = username))
 
 @app.route('/logout', methods = ['GET'])
 @login_required
