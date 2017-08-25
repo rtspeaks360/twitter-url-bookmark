@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 13:45:41
+# @Last Modified time: 2017-08-25 14:12:33
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -202,6 +202,10 @@ def get_tweets():
 
 	if request.method == "POST":
 		date_q = request.form["tweets_for_date"]
+		if date_q == None or date_q == "":
+			flash("You need to select a date before submiting a query.")
+			return redirect(url_for("get_tweets"))
+
 		username = session["username"]
 		try:
 			user = dbsession.query(User).filter(User.twitter_username == username).one()
