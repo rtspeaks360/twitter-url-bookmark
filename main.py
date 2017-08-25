@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 14:48:42
+# @Last Modified time: 2017-08-25 14:52:39
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -193,7 +193,7 @@ def get_tweets():
 
 		tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
 		if len(tweets) == 0:
-			tweets = get_tweets_from_twitter(user)
+			tweets = get_tweets_for_user(user)
 			# flash("No tweets were found right now in our database. Updation of tweets may take some time.")
 		
 		return render_template("tweets-new.html", tweets = tweets)
