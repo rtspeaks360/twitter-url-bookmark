@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 14:45:40
+# @Last Modified time: 2017-08-25 14:48:42
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -112,7 +112,7 @@ requestArguments1.add_argument("oauth_token", type = str, location = "args")
 requestArguments1.add_argument("oauth_verifier", type = str, location = "args")
 
 
-def get_tweets_for_user(user)
+def get_tweets_for_user(user):
 	_ = user
 	print(_.id)
 	access_token = _.access_token
