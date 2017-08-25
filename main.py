@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 13:38:54
+# @Last Modified time: 2017-08-25 13:45:41
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -187,7 +187,7 @@ def get_tweets():
 		flash('No user found' + username)
 		return redirect(url_for('index'))
 	if request.method == "GET":
-		flash ("you are logged in as " + username+ ". Showing tweets for today - " + str(datetime.datetime.now.date()) + ".")
+		flash ("you are logged in as " + username+ ". Showing tweets for today - " + str(datetime.datetime.now().date()) + ".")
 		today = datetime.datetime.now().date()
 		s = datetime.datetime.strftime(today, '%Y-%m-%d 00:00:00')
 		interval_start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
