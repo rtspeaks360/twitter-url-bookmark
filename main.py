@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-25 14:57:52
+# @Last Modified time: 2017-08-28 04:29:35
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -227,6 +227,7 @@ def get_tweets():
 @app.route('/logout', methods = ['GET'])
 @login_required
 def logout():
+	session.pop('username', None)
     session.pop('logged_in', None)
     flash('You were logged out.')
     return redirect(url_for("index"))
@@ -253,6 +254,8 @@ def index():
 		
 		return redirect("%s?oauth_token=%s" % (authorize_url, s.decode('utf-8')))
 	else:
+		if 'logged_in' in session and 'username' in session:
+			return redirect(url_for("get_tweets"))
 		return render_template("index.html")
  
 
