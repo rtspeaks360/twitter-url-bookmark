@@ -30,6 +30,13 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
+          	<li>
+          		<form method="POST"><p>Get tweets for : 
+      				<input type="date" name="tweets_for_date" required>
+      				<input type="submit" value="GO">
+      				</p>
+      			</form>
+          	</li>
             <li><a href="{{url_for('logout')}}">logout?</a></li>
           </ul>
         </div>
@@ -47,13 +54,13 @@
           <p class = "text-center">{{ message }}</p><br>
       {% endfor %}
 
-      <dir class="row">
+      <!-- <dir class="row">
       	<form method="POST"><p>Get tweets for : 
       		<input type="date" name="tweets_for_date" required>
       		<input type="submit" value="GO">
       		</p>
       	</form>
-      </dir>
+      </dir> -->
       <div class="row">
         
         <div class="table-responsive">
@@ -75,7 +82,7 @@
                   <tr>
                   	<td>{{d.twitter_id}}</td>
                     <td>{{d.contact}}</td>
-                    <td><a href="{{d.embedded_url}}">{{d.embedded_url}}</a>></td>
+                    <td><a href="{{d.embedded_url}}" target="_blank">{{d.embedded_url}}</a>></td>
                     <td>{{d.tweet_text}}</td>
                     <td>{{d.twitter_timestamp}}</td>
                     </td>  
