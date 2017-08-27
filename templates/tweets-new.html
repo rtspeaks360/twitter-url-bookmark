@@ -26,11 +26,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('get_tweets')}}">Twitub</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">Twitub</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
-          	<li id="form-list-element">
+          	<li>
+              <a href="{{url_for('get_tweets')}}">
+                <img src="{{url_for('static', filename = 'img/download-icon-down-arrow.png')}}">  
+              </a>
+            </li>
+            <li>
           		<form method="POST" style="margin-top: 12.5px " ><p ><span style="color:#d5d5d5">Get tweets for : </span>
         				<input type="date" name="tweets_for_date" required>
         				<input type="submit" value="GO">
