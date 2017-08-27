@@ -30,12 +30,12 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
-          	<li>
+          	<li title="Get your latest tweets from the database.">
               <a href="{{url_for('get_tweets')}}">
-                <img src="{{url_for('static', filename = 'img/download-icon-down-arrow.png')}}">  
+                <img src="{{url_for('static', filename = 'img/download-icon-down-arrow.png')}}" height="27px" style="margin-top: -3px">  
               </a>
             </li>
-            <li>
+            <li title="Pick a date for which you wanna get tweets.">
           		<form method="POST" style="margin-top: 12.5px " ><p ><span style="color:#d5d5d5">Get tweets for : </span>
         				<input type="date" name="tweets_for_date" required>
         				<input type="submit" value="GO">
