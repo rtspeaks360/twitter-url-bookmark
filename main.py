@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-28 04:35:40
+# @Last Modified time: 2017-08-28 06:29:16
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -197,7 +197,8 @@ def get_tweets():
         tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
         if len(tweets) == 0:
             tweets = get_tweets_for_user(user)
-            # flash("No tweets were found right now in our database. Updation of tweets may take some time.")
+            if len(tweets) == 0:
+                flash("No tweets were found right now in our database. Updation of tweets may take some time. Try hitting the reload button in the top status bar after some time.")
         
         return render_template("tweets-new.html", tweets = tweets)
 
@@ -219,7 +220,12 @@ def get_tweets():
         interval_end = interval_start + datetime.timedelta(days = 1)
         tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
         if len(tweets) == 0:
-            flash("Sorry. No tweets were found for " + date_q + " in our database.")
+            if user.insert_time > interval_end:
+                flash("Sorry. No tweets were found for " + date_q + " in our database. Dude, we might have a history but we do not go that back!")
+            elif datetime.datetime.now() < interval_start :    
+                flash("Sorry. No tweets were found for " + date_q + " in our database. Dude I'm just a bookmarker, can't predict the future just yet pal, maybe some day!")
+            else:
+                flash("Sorry. No tweets were found for " + date_q + " in our database.")
         else:
             flash("Showing tweets for " + date_q + ".")
         return render_template("tweets-new.html", tweets = tweets)
