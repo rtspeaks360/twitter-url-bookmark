@@ -2,7 +2,7 @@
 # @Author: Rishabh Thukral
 # @Date:   2017-08-23 02:40:32
 # @Last Modified by:   Rishabh Thukral
-# @Last Modified time: 2017-08-28 06:29:16
+# @Last Modified time: 2017-08-28 06:45:15
 
 import logging
 from flask import Flask, Blueprint, render_template, session, request, redirect, flash, url_for
@@ -220,7 +220,9 @@ def get_tweets():
         interval_end = interval_start + datetime.timedelta(days = 1)
         tweets = dbsession.query(Tweet).filter(Tweet.user_id == user.id).filter(and_(Tweet.twitter_timestamp >= interval_start , Tweet.twitter_timestamp < interval_end)).order_by(desc(Tweet.twitter_timestamp)).all()
         if len(tweets) == 0:
-            if user.insert_time > interval_end:
+            ub = datetime.datetime.strftime(user.insert_time, "%Y-%m-%d %H:%M:%S")
+            ub = datetime.datetime.strptime(ub, '%Y-%m-%d %H:%M:%S')
+            if ub > interval_end:
                 flash("Sorry. No tweets were found for " + date_q + " in our database. Dude, we might have a history but we do not go that back!")
             elif datetime.datetime.now() < interval_start :    
                 flash("Sorry. No tweets were found for " + date_q + " in our database. Dude I'm just a bookmarker, can't predict the future just yet pal, maybe some day!")
